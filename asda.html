@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños! 🎉</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="page1" class="page active">
+        <div class="container">
+            <div class="logo-container" id="logoContainer">
+                <img src="/placeholder.svg?height=300&width=300" alt="Spiderman Logo" class="spinning-logo">
+            </div>
+            
+            <p class="click-text" id="initialText">Haz clic para continuar</p>
+            
+            <div class="mission-text hidden" id="missionText">
+                <span id="line1" class="typed-line"></span>
+                <span id="line2" class="typed-line"></span>
+                <span id="line3" class="typed-line"></span>
+                <p class="click-text hidden" id="secondClickText">Haz clic aquí para ver tu recompensa</p>
+            </div>
+
+        </div>
+        <audio id="bgMusic1" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="content-wrapper" id="page2Content">
+            
+            <button class="close-button" id="closeModalButton">&times;</button>
+            
+            <div class="video-section">
+                <div class="video-container" id="videoContainer">
+                    <video id="mainVideo" poster="/placeholder.svg?height=400&width=600">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    </video>
+                    <div class="play-overlay" id="playOverlay">
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-section">
+                <h1 class="title">¡Feliz Cumpleaños!</h1>
+                <div class="message">
+                    <p>En este día tan especial, quiero desearte lo mejor del mundo.</p>
+                    <p>Que todos tus sueños se hagan realidad y que este nuevo año de vida esté lleno de aventuras increíbles.</p>
+                    <p>Eres una persona extraordinaria, tan valiente como Spiderman y tan fuerte como Master Chief.</p>
+                    <p>¡Que disfrutes mucho tu día!</p>
+                    <p class="signature">Con mucho cariño ❤️</p>
+                </div>
+            </div>
+        </div>
+        <audio id="bgMusic2" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

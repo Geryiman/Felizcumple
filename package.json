@@ -1,0 +1,24 @@
+{
+  "name": "my-v0-project",
+  "version": "0.1.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "private": true,
+  "packages": {},
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.9",
+    "@types/node": "^22",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8.5",
+    "tailwindcss": "^4.1.9",
+    "tw-animate-css": "1.3.3",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "eslint .",
+    "start": "next start"
+  }
+}
