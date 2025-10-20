@@ -1,12 +1,284 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --spidey-red: #e4002b;
+  --spidey-black: #0a0a0a;
+  --spidey-cyan: #00d9ff;
+  --spidey-magenta: #ff006e;
+  --spidey-yellow: #ffd60a;
+  --spidey-white: #ffffff;
+}
+
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Bebas Neue", sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: var(--spidey-white);
   overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animated Background Layers - Spider-Verse Style */
+.bg-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-layer-1 {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(228, 0, 43, 0.05) 10px,
+    rgba(228, 0, 43, 0.05) 20px
+  );
+  animation: slide-diagonal 30s linear infinite;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
+.bg-layer-2 {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 15px,
+    rgba(0, 217, 255, 0.04) 15px,
+    rgba(0, 217, 255, 0.04) 30px
+  );
+  animation: slide-diagonal-reverse 35s linear infinite;
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+.bg-layer-3 {
+  background-image: 
+    radial-gradient(circle, rgba(255, 0, 110, 0.15) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 217, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px, 20px 20px;
+  animation: halftone-pulse 5s ease-in-out infinite;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+}
+
+/* Added spider web layers with parallax effect */
+.spider-web-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 1;
+}
+
+.spider-web-1 {
+  background-image: linear-gradient(
+      90deg,
+      transparent 49%,
+      var(--spidey-cyan) 49%,
+      var(--spidey-cyan) 51%,
+      transparent 51%
+    ), linear-gradient(0deg, transparent 49%, var(--spidey-cyan) 49%, var(--spidey-cyan) 51%, transparent 51%);
+  background-size: 100px 100px;
+  animation: web-drift-1 30s linear infinite;
+}
+
+.spider-web-2 {
+  background-image: linear-gradient(
+      45deg,
+      transparent 48%,
+      var(--spidey-magenta) 48%,
+      var(--spidey-magenta) 52%,
+      transparent 52%
+    ), linear-gradient(-45deg, transparent 48%, var(--spidey-magenta) 48%, var(--spidey-magenta) 52%, transparent 52%);
+  background-size: 80px 80px;
+  animation: web-drift-2 25s linear infinite reverse;
+  opacity: 0.1;
+}
+
+@keyframes web-drift-1 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100px, 100px);
+  }
+}
+
+@keyframes web-drift-2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(-80px, -80px) rotate(360deg);
+  }
+}
+
+/* Added floating spider decorations with different animations */
+.spider-decoration {
+  position: fixed;
+  font-size: 2rem;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px var(--spidey-red));
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.spider-1 {
+  top: 10%;
+  left: 5%;
+  animation: float-spider-1 8s infinite;
+}
+
+.spider-2 {
+  top: 20%;
+  right: 10%;
+  animation: float-spider-2 10s infinite;
+}
+
+.spider-3 {
+  top: 60%;
+  left: 8%;
+  animation: float-spider-3 12s infinite;
+}
+
+.spider-4 {
+  bottom: 15%;
+  right: 15%;
+  animation: float-spider-4 9s infinite;
+}
+
+.spider-5 {
+  top: 40%;
+  right: 5%;
+  animation: float-spider-5 11s infinite;
+}
+
+.spider-6 {
+  bottom: 25%;
+  left: 12%;
+  animation: float-spider-6 13s infinite;
+}
+
+@keyframes float-spider-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -30px) rotate(10deg);
+  }
+  50% {
+    transform: translate(-10px, -50px) rotate(-5deg);
+  }
+  75% {
+    transform: translate(30px, -20px) rotate(15deg);
+  }
+}
+
+@keyframes float-spider-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-25px, 40px) rotate(-10deg);
+  }
+  66% {
+    transform: translate(15px, 20px) rotate(8deg);
+  }
+}
+
+@keyframes float-spider-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(40px, -40px) rotate(20deg);
+  }
+}
+
+@keyframes float-spider-4 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-30px, -20px) rotate(-15deg);
+  }
+  50% {
+    transform: translate(-50px, 10px) rotate(-25deg);
+  }
+  75% {
+    transform: translate(-20px, -30px) rotate(-10deg);
+  }
+}
+
+@keyframes float-spider-5 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-35px, 45px) rotate(12deg);
+  }
+}
+
+@keyframes float-spider-6 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(25px, -35px) rotate(-8deg);
+  }
+  66% {
+    transform: translate(-15px, -25px) rotate(18deg);
+  }
+}
+
+@keyframes slide-diagonal {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+@keyframes slide-diagonal-reverse {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-50px, -50px);
+  }
+}
+
+@keyframes halftone-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .page {
@@ -33,7 +305,6 @@ body {
   transition: filter 0.3s ease;
 }
 
-/* Efecto blur cuando el modal está abierto */
 #page1.modal-open {
   filter: blur(8px);
 }
@@ -41,40 +312,206 @@ body {
 .container {
   text-align: center;
   padding: 20px;
+  position: relative;
+  z-index: 10;
 }
 
+/* Hero Text - Comic Book Style */
+.hero-text {
+  font-family: "Bangers", cursive;
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--spidey-yellow);
+  text-shadow: 3px 3px 0 var(--spidey-red), 6px 6px 0 var(--spidey-black), -2px -2px 0 var(--spidey-cyan);
+  animation: text-glitch 5s infinite;
+  letter-spacing: 0.1em;
+}
+
+@keyframes text-glitch {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+  }
+  92% {
+    transform: translate(-2px, 2px);
+  }
+  94% {
+    transform: translate(2px, -2px);
+  }
+  96% {
+    transform: translate(-2px, -2px);
+  }
+  98% {
+    transform: translate(2px, 2px);
+  }
+}
+
+/* Redesigned logo container for spider icon with enhanced layering */
 .logo-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto 3rem;
   cursor: pointer;
   transition: transform 0.3s ease;
+  perspective: 1000px;
 }
 
 .logo-container:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
-.spinning-logo {
-  width: 300px;
-  height: 300px;
-  animation: spin 4s linear infinite;
-  filter: drop-shadow(0 0 30px rgba(226, 54, 54, 0.8));
+.logo-container:hover .spider-logo {
+  animation: spin-3d 4s linear infinite, glitch-intense 0.3s infinite;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+/* New spider logo with SVG icon */
+.spider-logo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  animation: spin-3d 8s linear infinite;
+  filter: drop-shadow(0 0 30px var(--spidey-red)) drop-shadow(0 0 50px var(--spidey-magenta));
+}
+
+.spider-icon {
+  width: 100%;
+  height: 100%;
+  color: var(--spidey-red);
+  transition: all 0.3s ease;
+}
+
+@keyframes spin-3d {
+  0% {
+    transform: rotateY(0deg) rotateZ(0deg);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: rotateY(180deg) rotateZ(180deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+@keyframes glitch-intense {
+  0% {
+    transform: translate(0) rotateY(0deg);
+    filter: hue-rotate(0deg) drop-shadow(0 0 30px var(--spidey-red));
+  }
+  20% {
+    transform: translate(-3px, 3px) rotateY(10deg);
+    filter: hue-rotate(90deg) drop-shadow(0 0 30px var(--spidey-cyan));
+  }
+  40% {
+    transform: translate(-3px, -3px) rotateY(-10deg);
+    filter: hue-rotate(180deg) drop-shadow(0 0 30px var(--spidey-magenta));
+  }
+  60% {
+    transform: translate(3px, 3px) rotateY(10deg);
+    filter: hue-rotate(270deg) drop-shadow(0 0 30px var(--spidey-yellow));
+  }
+  80% {
+    transform: translate(3px, -3px) rotateY(-10deg);
+    filter: hue-rotate(360deg) drop-shadow(0 0 30px var(--spidey-red));
+  }
+  100% {
+    transform: translate(0) rotateY(0deg);
+    filter: hue-rotate(0deg) drop-shadow(0 0 30px var(--spidey-red));
+  }
+}
+
+/* Enhanced chromatic aberration with additional yellow layer */
+.logo-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.logo-layer-cyan {
+  background: radial-gradient(circle, var(--spidey-cyan) 0%, transparent 70%);
+  opacity: 0.4;
+  animation: aberration-cyan 2s ease-in-out infinite;
+}
+
+.logo-layer-magenta {
+  background: radial-gradient(circle, var(--spidey-magenta) 0%, transparent 70%);
+  opacity: 0.4;
+  animation: aberration-magenta 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.logo-layer-yellow {
+  background: radial-gradient(circle, var(--spidey-yellow) 0%, transparent 70%);
+  opacity: 0.3;
+  animation: aberration-yellow 2.5s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes aberration-cyan {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-8px, -8px) scale(1.1);
+  }
+}
+
+@keyframes aberration-magenta {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8px, 8px) scale(1.1);
+  }
+}
+
+@keyframes aberration-yellow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(0, -10px) scale(1.15) rotate(180deg);
   }
 }
 
 .click-text {
-  color: #d4af37;
+  color: var(--spidey-cyan);
   font-size: 24px;
   font-weight: bold;
   margin-top: 30px;
-  animation: pulse 2s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  animation: pulse-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 10px var(--spidey-cyan);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--spidey-cyan);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    text-shadow: 0 0 20px var(--spidey-cyan), 0 0 30px var(--spidey-cyan);
+    transform: scale(1.05);
+  }
 }
 
 .mission-text {
@@ -97,10 +534,12 @@ body {
 
 .typed-line {
   display: inline-block;
-  border-right: 0.15em solid orange;
+  border-right: 0.15em solid var(--spidey-yellow);
   animation: blinkingCursor 0.75s step-end infinite;
   min-height: 1.2em;
   line-height: 1.2em;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 @keyframes blinkingCursor {
@@ -109,7 +548,7 @@ body {
     border-color: transparent;
   }
   50% {
-    border-color: orange;
+    border-color: var(--spidey-yellow);
   }
 }
 
@@ -123,69 +562,79 @@ body {
   align-self: center;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.05);
-  }
-}
-
-/* Estilos del modal - Segunda Página como ventana emergente */
-#page2 {
+/* Modal Overlay - Segunda Página */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
+  background: rgba(0, 0, 0, 0.95);
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
 }
 
-#page2.active {
+.modal-overlay.active {
   display: flex;
   opacity: 1;
   pointer-events: all;
+  animation: modal-fade-in 0.5s ease;
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
   position: relative;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2b4c7e 50%, #4a7729 100%);
+  background: linear-gradient(135deg, var(--spidey-black) 0%, #1a0a0a 100%);
+  border: 4px solid var(--spidey-red);
   border-radius: 20px;
   max-width: 95vw;
   max-height: 95vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 60px rgba(228, 0, 43, 0.5), inset 0 0 100px rgba(0, 217, 255, 0.1), 0 0 0 8px var(--spidey-black);
   transform: scale(0.8);
   opacity: 0;
   transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease;
   padding: 40px 20px;
 }
 
-#page2.active .modal-content {
+.modal-overlay.active .modal-content {
   transform: scale(1);
   opacity: 1;
+  animation: modal-slide-up 0.5s ease;
 }
 
-/* Botón de cerrar modal */
+@keyframes modal-slide-up {
+  from {
+    transform: translateY(50px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
 .close-modal {
   position: absolute;
   top: 20px;
   right: 20px;
   width: 40px;
   height: 40px;
-  background: rgba(226, 54, 54, 0.9);
+  background: var(--spidey-red);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -198,9 +647,9 @@ body {
 }
 
 .close-modal:hover {
-  background: rgba(226, 54, 54, 1);
+  background: var(--spidey-magenta);
   transform: rotate(90deg) scale(1.1);
-  box-shadow: 0 6px 16px rgba(226, 54, 54, 0.5);
+  box-shadow: 0 6px 16px rgba(255, 0, 110, 0.5), 0 0 20px var(--spidey-magenta);
 }
 
 .close-modal svg {
@@ -231,9 +680,9 @@ body {
   max-width: 600px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 217, 255, 0.3);
   cursor: pointer;
-  border: 3px solid #d4af37;
+  border: 3px solid var(--spidey-cyan);
 }
 
 .video-container video {
@@ -263,9 +712,20 @@ body {
 .play-icon {
   width: 80px;
   height: 80px;
-  color: #d4af37;
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+  color: var(--spidey-red);
+  filter: drop-shadow(0 0 10px var(--spidey-red));
   transition: transform 0.3s ease;
+  animation: pulse-play 2s ease-in-out infinite;
+}
+
+@keyframes pulse-play {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .video-container:hover .play-icon {
@@ -287,36 +747,62 @@ body {
   flex: 1;
   color: white;
   padding: 20px;
+  margin: 0%;
 }
 
 .title {
+  font-family: "Bangers", cursive;
   font-size: 48px;
   font-weight: bold;
-  margin-bottom: 30px;
-  color: #d4af37;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  margin-bottom:  0px;
+  color: var(--spidey-yellow);
+  text-shadow: 3px 3px 0 var(--spidey-red), 6px 6px 0 var(--spidey-black), -2px -2px 0 var(--spidey-cyan);
+  animation: title-float 3s ease-in-out infinite;
+  letter-spacing: 0.1em;
+}
+
+@keyframes title-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .message {
   font-size: 20px;
   line-height: 1.8;
+  margin: 0%;
 }
 
 .message p {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   color: #f0f0f0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .signature {
+  font-family: "Bangers", cursive;
   font-size: 24px;
   font-weight: bold;
-  color: #e23636;
+  color: var(--spidey-magenta);
   margin-top: 40px;
-  text-shadow: 0 0 10px rgba(226, 54, 54, 0.5);
+  text-shadow: 2px 2px 0 var(--spidey-black), 0 0 10px rgba(255, 0, 110, 0.5);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .hero-text {
+    font-size: 2.5rem;
+  }
+
+  .logo-container {
+    width: 200px;
+    height: 200px;
+  }
+
   .spinning-logo {
     width: 200px;
     height: 200px;
@@ -331,7 +817,10 @@ body {
     min-height: 120px;
   }
 
-  /* Ajustes responsivos para el modal */
+  .typed-line {
+    font-size: 1.2rem;
+  }
+
   .modal-content {
     padding: 30px 15px;
     max-width: 98vw;
@@ -359,7 +848,7 @@ body {
   .text-section {
     order: 2;
     width: 100%;
-    padding: 10px;
+    padding: 0px;
   }
 
   .title {
@@ -384,6 +873,15 @@ body {
 }
 
 @media (max-width: 480px) {
+  .hero-text {
+    font-size: 2rem;
+  }
+
+  .logo-container {
+    width: 150px;
+    height: 150px;
+  }
+
   .spinning-logo {
     width: 150px;
     height: 150px;
@@ -400,6 +898,10 @@ body {
   .mission-text {
     font-size: 16px;
     min-height: 100px;
+  }
+
+  .typed-line {
+    font-size: 1rem;
   }
 
   .close-modal {

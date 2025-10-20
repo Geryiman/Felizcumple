@@ -3,36 +3,753 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Feliz Cumpleaños! 🎉</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>¡Feliz Cumpleaños Spider! 🕷️</title>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.82/build/spline-viewer.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --spidey-red: #E4002B;
+            --spidey-black: #0A0A0A;
+            --spidey-cyan: #00D9FF;
+            --spidey-magenta: #FF006E;
+            --spidey-yellow: #FFD60A;
+            --spidey-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Bebas Neue', sans-serif;
+            background: var(--spidey-black);
+            color: var(--spidey-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Layers */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-layer-1 {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(228, 0, 43, 0.03) 10px,
+                    rgba(228, 0, 43, 0.03) 20px
+                );
+            animation: slide-diagonal 20s linear infinite;
+            opacity: 0.5; /* Reducir opacidad para que no compita con el fondo 3D */
+        }
+
+        .bg-layer-2 {
+            background: 
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 15px,
+                    rgba(0, 217, 255, 0.02) 15px,
+                    rgba(0, 217, 255, 0.02) 30px
+                );
+            animation: slide-diagonal-reverse 25s linear infinite;
+            opacity: 0.4; /* Reducir opacidad para que no compita con el fondo 3D */
+        }
+
+        .bg-layer-3 {
+            background-image: 
+                radial-gradient(circle, rgba(255, 0, 110, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: halftone-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes slide-diagonal {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes slide-diagonal-reverse {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        @keyframes halftone-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Main Container */
+        /* Estilos para el fondo de Spline */
+        #spline-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Detrás de todo */
+            opacity: 1;
+            overflow: hidden;
+            background: #000; /* Fondo negro para evitar parpadeos */
+        }
+        
+        #spline-background spline-viewer {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        /* Asegurar que el visor de spline ocupe todo el espacio */
+        spline-viewer {
+            --progress-bar-color: #E4002B;
+            --progress-bar-height: 3px;
+            --viewer-cursor-default: default !important;
+        }
+        
+        /* Cubrir marca de agua */
+        #watermark-cover {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 30px;
+            background-color: #000000;
+            z-index: 10;
+        }
+        
+        /* Ajustes para móviles */
+        @media (max-width: 768px) {
+            #spline-background {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+            
+            #watermark-cover {
+                width: 120px;
+                height: 25px;
+            }
+            
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                min-height: calc(100vh - 1rem);
+                background-color: rgba(0, 0, 0, 0.4); /* Reducir opacidad */
+                backdrop-filter: blur(5px); /* Reducir desenfoque */
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2; /* Asegura que el contenido esté sobre el fondo */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 1rem auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+            background-color: rgba(0, 0, 0, 0.4); /* Reducir opacidad */
+            backdrop-filter: blur(8px); /* Reducir desenfoque */
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glitch Logo Container */
+        .logo-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 2rem 0 4rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 10px 20px rgba(228, 0, 43, 0.3));
+        }
+        
+        @media (min-width: 768px) {
+            .logo-container {
+                width: 300px;
+                height: 300px;
+                margin: 3rem 0 5rem;
+            }
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-container:hover .logo-main {
+            animation: glitch 0.3s infinite;
+        }
+
+        .logo-main {
+            width: 100%;
+            height: 100%;
+            background: var(--spidey-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: var(--spidey-white);
+            text-shadow: 
+                3px 3px 0 var(--spidey-black),
+                -3px -3px 0 var(--spidey-cyan);
+            position: relative;
+            overflow: hidden;
+            animation: spin-slow 20s linear infinite;
+            box-shadow: 
+                0 0 30px rgba(228, 0, 43, 0.5),
+                inset 0 0 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-main::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.1) 2px,
+                rgba(255, 255, 255, 0.1) 4px
+            );
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50%); }
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+                filter: hue-rotate(90deg);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+                filter: hue-rotate(180deg);
+            }
+            60% {
+                transform: translate(2px, 2px);
+                filter: hue-rotate(270deg);
+            }
+            80% {
+                transform: translate(2px, -2px);
+                filter: hue-rotate(360deg);
+            }
+            100% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        /* Chromatic Aberration Effect */
+        .logo-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .logo-layer-cyan {
+            background: var(--spidey-cyan);
+            opacity: 0.3;
+            animation: aberration-cyan 2s ease-in-out infinite;
+        }
+
+        .logo-layer-magenta {
+            background: var(--spidey-magenta);
+            opacity: 0.3;
+            animation: aberration-magenta 2s ease-in-out infinite;
+        }
+
+        @keyframes aberration-cyan {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-3px, -3px); }
+        }
+
+        @keyframes aberration-magenta {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(3px, 3px); }
+        }
+
+        /* Text Styles */
+        .hero-text {
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            color: var(--spidey-yellow);
+            text-shadow: 
+                3px 3px 0 var(--spidey-red),
+                6px 6px 0 var(--spidey-black),
+                -2px -2px 0 var(--spidey-cyan);
+            animation: text-glitch 5s infinite;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes text-glitch {
+            0%, 90%, 100% {
+                transform: translate(0);
+            }
+            92% {
+                transform: translate(-2px, 2px);
+            }
+            94% {
+                transform: translate(2px, -2px);
+            }
+            96% {
+                transform: translate(-2px, -2px);
+            }
+            98% {
+                transform: translate(2px, 2px);
+            }
+        }
+
+        .click-text {
+            font-size: 1.5rem;
+            color: var(--spidey-cyan);
+            text-align: center;
+            animation: pulse-glow 2s ease-in-out infinite;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 10px var(--spidey-cyan);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 10px var(--spidey-cyan);
+            }
+            50% {
+                opacity: 0.5;
+                text-shadow: 0 0 20px var(--spidey-cyan), 0 0 30px var(--spidey-cyan);
+            }
+        }
+
+        /* Mission Text */
+        .mission-text {
+            max-width: 800px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .typed-line {
+            display: block;
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: var(--spidey-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .typed-line::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+
+        .typed-line.finished-typing::after {
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: modal-fade-in 0.5s ease;
+        }
+
+        @keyframes modal-fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #0f0f0f 0%, #1a0a0a 100%);
+            border: 3px solid var(--spidey-red);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 
+                       inset 0 0 30px rgba(228, 0, 43, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: modalAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes modalAppear {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--spidey-red), var(--spidey-cyan));
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 
+                0 0 50px rgba(228, 0, 43, 0.5),
+                inset 0 0 100px rgba(0, 217, 255, 0.1);
+            animation: modal-slide-up 0.5s ease;
+        }
+
+        @keyframes modal-slide-up {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--spidey-red);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            background: var(--spidey-magenta);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 20px var(--spidey-magenta);
+        }
+
+        .close-modal svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--spidey-white);
+            stroke-width: 3;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .video-section {
+            width: 100%;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: var(--spidey-black);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--spidey-cyan);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover .play-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .play-icon {
+            width: 80px;
+            height: 80px;
+            color: var(--spidey-red);
+            filter: drop-shadow(0 0 10px var(--spidey-red));
+            animation: pulse-play 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-play {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .text-section {
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            color: var(--spidey-yellow);
+            text-shadow: 
+                3px 3px 0 var(--spidey-red),
+                6px 6px 0 var(--spidey-black),
+                -2px -2px 0 var(--spidey-cyan);
+            margin-bottom: 2rem;
+            animation: title-float 3s ease-in-out infinite;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes title-float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--spidey-white);
+        }
+
+        .message p {
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .signature {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            color: var(--spidey-magenta);
+            margin-top: 2rem;
+            text-shadow: 2px 2px 0 var(--spidey-black);
+        }
+
+        /* Comic Book Style Borders */
+        .comic-border {
+            position: relative;
+        }
+
+        .comic-border::before,
+        .comic-border::after {
+            content: '';
+            position: absolute;
+            background: var(--spidey-yellow);
+        }
+
+        .comic-border::before {
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            height: 5px;
+        }
+
+        .comic-border::after {
+            bottom: -5px;
+            left: -5px;
+            right: -5px;
+            height: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .logo-container {
+                width: 200px;
+                height: 200px;
+                margin: 1.5rem 0 3rem;
+            }
+            
+            .logo-main {
+                font-size: 2.5rem;
+            }
+            
+            }
+
+            .message {
+                font-size: 1.1rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+
+        /* Fullscreen Video */
+        .video-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            padding-bottom: 0;
+            z-index: 2000;
+            border-radius: 0;
+        }
+    </style>
 </head>
 <body>
-    <div id="page1" class="page active">
-        <div class="container">
-            <div class="logo-container" id="logoContainer">
-                <img src="assets/logo-spiderman.png" alt="Spiderman Logo" class="spinning-logo">
-            </div>
+    <!-- Fondo Spline 3D -->
+    <div id="spline-background">
+        <spline-viewer 
+            url="https://prod.spline.design/efeMytg7SwP9aCgW/scene.splinecode" 
+            loading-anim-type="spinner-big-light" 
+            events-target="global"
+            style="width: 100%; height: 100%; position: absolute;"
+            camera-controls="true"
+            disable-zoom="true"
+            disable-pan="true"
+            disable-rotate-on-mobile="false"
+            disable-zoom-on-mobile="true"
+            disable-pan-on-mobile="true"
+        ></spline-viewer>
+        <!-- Cubrir marca de agua -->
+        <div id="watermark-cover"></div>
+    </div>
+    
+    <!-- Capas de fondo animadas (ahora con menor opacidad) -->
+    <div class="bg-layer bg-layer-1"></div>
+    <div class="bg-layer bg-layer-2"></div>
+    <div class="bg-layer bg-layer-3"></div>
 
-            <p class="click-text" id="initialText">Click</p>
-            
-            <div class="mission-text hidden" id="missionText">
-                <span id="line1" class="typed-line"></span>
-                <span id="line2" class="typed-line"></span>
-                <span id="line3" class="typed-line"></span>
-                <p class="click-text hidden" id="secondClickText">Haz clic aquí para ver tu recompensa</p>
-            </div>
+    <!-- Page 1: Main Landing -->
+    <div id="page1" class="container">
+        <h1 class="hero-text">SPIDER-VERSE</h1>
+        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.82/build/spline-viewer.js"></script>
 
+        <div class="logo-container" id="logoContainer">
+            <div class="logo-layer logo-layer-cyan"></div>
+            <div class="logo-layer logo-layer-magenta"></div>
+            <div class="logo-main">🕷️</div>
         </div>
-        <audio id="bgMusic1" loop>
-            <source src="assets/cancion-pagina1.mp3" type="audio/mpeg">
-        </audio>
+        
+        <p class="click-text" id="initialText">Haz clic para continuar</p>
+        
+        <div class="mission-text hidden" id="missionText">
+            <span id="line1" class="typed-line"></span>
+            <span id="line2" class="typed-line"></span>
+            <span id="line3" class="typed-line"></span>
+            <p class="click-text hidden" id="secondClickText">Haz clic aquí para ver tu recompensa</p>
+        </div>
     </div>
 
-    <!-- Convertido a modal con botón de cerrar -->
-    <div id="page2" class="page modal-overlay">
-        <div class="modal-content" id="page2Content">
+    <!-- Page 2: Modal with Birthday Message -->
+    <div id="page2" class="modal-overlay">
+        <div class="modal-content">
             <button class="close-modal" id="closeModalButton" aria-label="Cerrar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg viewBox="0 0 24 24" fill="none">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -41,8 +758,8 @@
             <div class="content-wrapper">
                 <div class="video-section">
                     <div class="video-container" id="videoContainer">
-                        <video id="mainVideo" poster="assets/poster-video.jpg">
-                            <source src="assets/mi-video.mp4" type="video/mp4">
+                        <video id="mainVideo" poster="/placeholder.svg?height=400&width=600">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                         </video>
                         <div class="play-overlay" id="playOverlay">
                             <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -64,11 +781,194 @@
                 </div>
             </div>
         </div>
-        <audio id="bgMusic2" loop>
-            <source src="assets/cancion-pagina2.mp3" type="audio/mpeg">
-        </audio>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Audio Elements -->
+    <audio id="bgMusic1" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic2" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Referencias a elementos
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const logoContainer = document.getElementById('logoContainer');
+        const bgMusic1 = document.getElementById('bgMusic1');
+        const bgMusic2 = document.getElementById('bgMusic2');
+        const videoContainer = document.getElementById('videoContainer');
+        const mainVideo = document.getElementById('mainVideo');
+        const playOverlay = document.getElementById('playOverlay');
+        const initialText = document.getElementById('initialText');
+        const missionText = document.getElementById('missionText');
+        const secondClickText = document.getElementById('secondClickText');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        const closeModalButton = document.getElementById('closeModalButton');
+
+        // Texto a escribir
+        const missionMessage = [
+            'Bienvenido Araña.',
+            'Hoy cumpliste una misión muy importante:',
+            'lograste sobrevivir un año de muchas aventuras.'
+        ];
+        const typingSpeed = 50;
+        const lineDelay = 500;
+
+        // Función Typewriter
+        function typeWriter(textElement, text, i, callback) {
+            if (i === 0) {
+                textElement.innerHTML = '';
+            }
+            if (i < text.length) {
+                textElement.innerHTML += text.charAt(i);
+                setTimeout(() => typeWriter(textElement, text, i + 1, callback), typingSpeed);
+            } else {
+                textElement.classList.add('finished-typing');
+                if (callback) callback();
+            }
+        }
+
+        // Intentar reproducir música al cargar
+        window.addEventListener('load', () => {
+            bgMusic1.play().catch(error => {
+                console.log('Autoplay bloqueado. Esperando primer clic.');
+            });
+        });
+
+        // Primer clic en el logo
+        logoContainer.addEventListener('click', () => {
+            bgMusic1.play().catch(error => {
+                console.log('Error al reproducir música 1:', error);
+            });
+            initialText.classList.add('hidden');
+            missionText.classList.remove('hidden');
+            logoContainer.style.cursor = 'default';
+            logoContainer.style.pointerEvents = 'none';
+
+            typeWriter(line1, missionMessage[0], 0, () => {
+                setTimeout(() => {
+                    typeWriter(line2, missionMessage[1], 0, () => {
+                        setTimeout(() => {
+                            typeWriter(line3, missionMessage[2], 0, () => {
+                                secondClickText.classList.remove('hidden');
+                                secondClickText.addEventListener('click', () => {
+                                    openModal();
+                                }, { once: true });
+                            });
+                        }, lineDelay);
+                    });
+                }, lineDelay);
+            });
+        }, { once: true });
+
+        // Abrir modal
+        function openModal() {
+            bgMusic1.pause();
+            bgMusic1.currentTime = 0;
+            page2.classList.add('active');
+            bgMusic2.play().catch(error => {
+                console.log('Error al reproducir música de página 2:', error);
+            });
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            page2.classList.remove('active');
+            bgMusic2.pause();
+            bgMusic2.currentTime = 0;
+            mainVideo.pause();
+            playOverlay.classList.remove('hidden');
+            if (isFullscreen) {
+                exitFullscreen();
+            }
+            bgMusic1.play().catch(error => {
+                console.log('Error al reanudar música 1:', error);
+            });
+        }
+
+        closeModalButton.addEventListener('click', closeModal);
+
+        page2.addEventListener('click', (e) => {
+            if (e.target === page2) {
+                closeModal();
+            }
+        });
+
+        // Control del video
+        let isFullscreen = false;
+
+        videoContainer.addEventListener('click', () => {
+            if (!isFullscreen) {
+                videoContainer.classList.add('fullscreen');
+                playOverlay.classList.add('hidden');
+                mainVideo.play();
+                bgMusic2.pause();
+                isFullscreen = true;
+
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+            }
+        });
+
+        // Detectar salida de pantalla completa
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && 
+                !document.mozFullScreenElement && !document.msFullscreenElement) {
+                exitFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            videoContainer.classList.remove('fullscreen');
+            mainVideo.pause();
+            bgMusic2.play().catch(e => console.log(e));
+            playOverlay.classList.remove('hidden');
+            isFullscreen = false;
+        }
+
+        mainVideo.addEventListener('ended', () => {
+            playOverlay.classList.remove('hidden');
+            bgMusic2.play().catch(e => console.log(e));
+        });
+
+        mainVideo.addEventListener('click', (e) => {
+            if (isFullscreen) {
+                e.stopPropagation();
+                if (mainVideo.paused) {
+                    mainVideo.play();
+                    bgMusic2.pause();
+                    playOverlay.classList.add('hidden');
+                } else {
+                    mainVideo.pause();
+                    bgMusic2.play().catch(e => console.log(e));
+                    playOverlay.classList.remove('hidden');
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (isFullscreen) {
+                    exitFullscreen();
+                } else if (page2.classList.contains('active')) {
+                    closeModal();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
