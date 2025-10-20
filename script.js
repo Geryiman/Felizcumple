@@ -89,11 +89,13 @@ logoContainer.addEventListener(
  * Función para ABRIR el modal - page1 queda visible con blur
  */
 function openModal() {
+  console.log("[v0] Opening modal - transitioning to page 2")
   bgMusic1.pause()
   bgMusic1.currentTime = 0
 
   page1.classList.add("modal-open")
   page2.classList.add("active")
+  console.log("[v0] Page 2 classes:", page2.className)
 
   bgMusic2.play().catch((error) => {
     console.log("Error al reproducir música de página 2:", error)
@@ -104,6 +106,7 @@ function openModal() {
  * Función para CERRAR el modal - vuelve a page1
  */
 function closeModal() {
+  console.log("[v0] Closing modal - returning to page 1")
   page2.classList.remove("active")
   page1.classList.remove("modal-open")
 
