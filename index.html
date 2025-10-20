@@ -785,10 +785,10 @@
 
     <!-- Audio Elements -->
     <audio id="bgMusic1" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="assets/cancion-pagina1.mp3" type="audio/mpeg">
     </audio>
     <audio id="bgMusic2" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        <source src="assets/cancion-pagina2.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -867,12 +867,46 @@
 
         // Abrir modal
         function openModal() {
+            // Pausar música de la primera vista
             bgMusic1.pause();
             bgMusic1.currentTime = 0;
+            
+            // Mostrar la segunda vista
             page2.classList.add('active');
-            bgMusic2.play().catch(error => {
-                console.log('Error al reproducir música de página 2:', error);
-            });
+            
+            // Configurar la música de la segunda vista
+            bgMusic2.volume = 0.5;
+            bgMusic2.loop = true;
+            
+            // Función para manejar la reproducción
+            const playMusic = () => {
+                // Primero pausar cualquier reproducción actual
+                bgMusic2.pause();
+                bgMusic2.currentTime = 0;
+                
+                // Intentar reproducir
+                const playPromise = bgMusic2.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log('Error en reproducción automática:', error);
+                        // Si falla, intentar de nuevo después de una interacción del usuario
+                        const playOnInteraction = () => {
+                            bgMusic2.play().then(() => {
+                                document.removeEventListener('click', playOnInteraction);
+                                document.removeEventListener('keydown', playOnInteraction);
+                            }).catch(console.error);
+                        };
+                        
+                        // Intentar reproducir con cualquier interacción
+                        document.addEventListener('click', playOnInteraction, { once: true });
+                        document.addEventListener('keydown', playOnInteraction, { once: true });
+                    });
+                }
+            };
+            
+            // Esperar un momento para asegurar que el modal esté visible
+            setTimeout(playMusic, 100);
         }
 
         // Cerrar modal
