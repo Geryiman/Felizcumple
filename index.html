@@ -412,19 +412,23 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            pointer-events: auto;
         }
-
+        
         .modal-overlay.active {
-            display: flex;
-            animation: modal-fade-in 0.5s ease;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
 
         @keyframes modal-fade-in {
@@ -537,22 +541,26 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%;
-            background: var(--spidey-black);
-            border-radius: 15px;
+            max-width: 800px;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 0 auto;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #000;
+            z-index: 10001;
             cursor: pointer;
-            border: 2px solid var(--spidey-cyan);
-            box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
         }
-
+        
         .video-container video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background-color: #000;
         }
 
         .play-overlay {
@@ -759,7 +767,7 @@
                 <div class="video-section">
                     <div class="video-container" id="videoContainer">
                         <video id="mainVideo" poster="/placeholder.svg?height=400&width=600">
-                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                            <source src="./assets//mi-video.mp4" type="video/mp4">
                         </video>
                         <div class="play-overlay" id="playOverlay">
                             <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -839,15 +847,14 @@
             });
         });
 
-        // Primer clic en el logo
-        logoContainer.addEventListener('click', () => {
+        // Función para manejar el primer clic
+        function handleFirstClick() {
             bgMusic1.play().catch(error => {
                 console.log('Error al reproducir música 1:', error);
             });
             initialText.classList.add('hidden');
             missionText.classList.remove('hidden');
             logoContainer.style.cursor = 'default';
-            logoContainer.style.pointerEvents = 'none';
 
             typeWriter(line1, missionMessage[0], 0, () => {
                 setTimeout(() => {
@@ -855,15 +862,22 @@
                         setTimeout(() => {
                             typeWriter(line3, missionMessage[2], 0, () => {
                                 secondClickText.classList.remove('hidden');
-                                secondClickText.addEventListener('click', () => {
-                                    openModal();
-                                }, { once: true });
                             });
                         }, lineDelay);
                     });
                 }, lineDelay);
             });
-        }, { once: true });
+        }
+
+        // Agregar evento de clic al logo
+        logoContainer.addEventListener('click', handleFirstClick, { once: true });
+
+        // Agregar evento de clic al texto de misión
+        missionText.addEventListener('click', () => {
+            if (secondClickText.classList.contains('hidden') === false) {
+                openModal();
+            }
+        });
 
         // Abrir modal
         function openModal() {
@@ -872,11 +886,17 @@
             bgMusic1.currentTime = 0;
             
             // Mostrar la segunda vista
-            page2.classList.add('active');
+            page2.style.display = 'flex';
+            setTimeout(() => {
+                page2.classList.add('active');
+            }, 10);
             
             // Configurar la música de la segunda vista
             bgMusic2.volume = 0.5;
             bgMusic2.loop = true;
+            
+            // Forzar el reinicio del video
+            mainVideo.load();
             
             // Función para manejar la reproducción
             const playMusic = () => {
@@ -890,17 +910,6 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         console.log('Error en reproducción automática:', error);
-                        // Si falla, intentar de nuevo después de una interacción del usuario
-                        const playOnInteraction = () => {
-                            bgMusic2.play().then(() => {
-                                document.removeEventListener('click', playOnInteraction);
-                                document.removeEventListener('keydown', playOnInteraction);
-                            }).catch(console.error);
-                        };
-                        
-                        // Intentar reproducir con cualquier interacción
-                        document.addEventListener('click', playOnInteraction, { once: true });
-                        document.addEventListener('keydown', playOnInteraction, { once: true });
                     });
                 }
             };
@@ -911,45 +920,102 @@
 
         // Cerrar modal
         function closeModal() {
-            page2.classList.remove('active');
-            bgMusic2.pause();
-            bgMusic2.currentTime = 0;
+            // No pausar la música de fondo al cerrar
+            // Solo pausar el video
             mainVideo.pause();
+            mainVideo.currentTime = 0;
             playOverlay.classList.remove('hidden');
+            
+            // Salir de pantalla completa si es necesario
             if (isFullscreen) {
                 exitFullscreen();
             }
-            bgMusic1.play().catch(error => {
-                console.log('Error al reanudar música 1:', error);
-            });
+            
+            // Ocultar el modal
+            page2.classList.remove('active');
+            
+            // Esperar a que termine la transición para ocultar el modal
+            setTimeout(() => {
+                page2.style.display = 'none';
+                
+                // Reanudar música de fondo de la primera pantalla
+                bgMusic1.play().catch(error => {
+                    console.log('Error al reanudar música 1:', error);
+                });
+            }, 300);
         }
 
         closeModalButton.addEventListener('click', closeModal);
 
+        // Cerrar al hacer clic fuera del contenido del modal
         page2.addEventListener('click', (e) => {
             if (e.target === page2) {
                 closeModal();
             }
         });
 
+        // Permitir cerrar con la tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (page2.classList.contains('active')) {
+                    closeModal();
+                }
+            }
+        });
+
         // Control del video
         let isFullscreen = false;
 
-        videoContainer.addEventListener('click', () => {
-            if (!isFullscreen) {
-                videoContainer.classList.add('fullscreen');
-                playOverlay.classList.add('hidden');
-                mainVideo.play();
-                bgMusic2.pause();
-                isFullscreen = true;
-
-                if (videoContainer.requestFullscreen) {
-                    videoContainer.requestFullscreen();
-                } else if (videoContainer.webkitRequestFullscreen) {
-                    videoContainer.webkitRequestFullscreen();
-                } else if (videoContainer.msRequestFullscreen) {
-                    videoContainer.msRequestFullscreen();
+        // Función para alternar reproducción del video
+        function toggleVideoPlayback() {
+            if (mainVideo.paused) {
+                const playPromise = mainVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Intentar entrar en pantalla completa después de iniciar la reproducción
+                        if (!isFullscreen) {
+                            enterFullscreen();
+                        }
+                    }).catch(error => {
+                        console.log('Error al reproducir video:', error);
+                    });
                 }
+                bgMusic2.pause();
+                playOverlay.classList.add('hidden');
+            } else {
+                mainVideo.pause();
+                bgMusic2.play().catch(e => console.log(e));
+                playOverlay.classList.remove('hidden');
+            }
+        }
+        
+        // Función para entrar en pantalla completa
+        function enterFullscreen() {
+            videoContainer.classList.add('fullscreen');
+            isFullscreen = true;
+            
+            if (videoContainer.requestFullscreen) {
+                videoContainer.requestFullscreen().catch(err => {
+                    console.log('Error al intentar pantalla completa:', err);
+                });
+            } else if (videoContainer.webkitRequestFullscreen) {
+                videoContainer.webkitRequestFullscreen();
+            } else if (videoContainer.msRequestFullscreen) {
+                videoContainer.msRequestFullscreen();
+            }
+        }
+
+        // Manejar clic en el contenedor del video
+        videoContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (isFullscreen) {
+                // Si ya está en pantalla completa, alternar reproducción
+                toggleVideoPlayback();
+            } else {
+                // Si no está en pantalla completa, iniciar reproducción
+                // que automáticamente pondrá en pantalla completa
+                toggleVideoPlayback();
             }
         });
 
@@ -962,11 +1028,22 @@
         function handleFullscreenChange() {
             if (!document.fullscreenElement && !document.webkitFullscreenElement && 
                 !document.mozFullScreenElement && !document.msFullscreenElement) {
-                exitFullscreen();
+                // Solo salir de pantalla completa si estábamos en ese modo
+                if (isFullscreen) {
+                    exitFullscreen();
+                }
             }
         }
 
         function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(err => console.log(err));
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            
             videoContainer.classList.remove('fullscreen');
             mainVideo.pause();
             bgMusic2.play().catch(e => console.log(e));
@@ -979,19 +1056,16 @@
             bgMusic2.play().catch(e => console.log(e));
         });
 
+        // Control de clic en el video
         mainVideo.addEventListener('click', (e) => {
-            if (isFullscreen) {
-                e.stopPropagation();
-                if (mainVideo.paused) {
-                    mainVideo.play();
-                    bgMusic2.pause();
-                    playOverlay.classList.add('hidden');
-                } else {
-                    mainVideo.pause();
-                    bgMusic2.play().catch(e => console.log(e));
-                    playOverlay.classList.remove('hidden');
-                }
-            }
+            e.stopPropagation();
+            toggleVideoPlayback();
+        });
+
+        // Control de clic en el overlay de reproducción
+        playOverlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleVideoPlayback();
         });
 
         document.addEventListener('keydown', (e) => {
